@@ -987,10 +987,10 @@
             this.listBoxAssemblies.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.listBoxAssemblies.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.listBoxAssemblies.FormattingEnabled = true;
-            this.listBoxAssemblies.ItemHeight = 25;
+            this.listBoxAssemblies.ItemHeight = 35;
             this.listBoxAssemblies.Location = new System.Drawing.Point(18, 26);
             this.listBoxAssemblies.Name = "listBoxAssemblies";
-            this.listBoxAssemblies.Size = new System.Drawing.Size(202, 429);
+            this.listBoxAssemblies.Size = new System.Drawing.Size(202, 424);
             this.listBoxAssemblies.TabIndex = 45;
             this.listBoxAssemblies.TabStop = false;
             this.listBoxAssemblies.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxAssemblies_DrawItem);
