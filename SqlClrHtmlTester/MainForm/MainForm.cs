@@ -19,6 +19,7 @@ namespace SqlClrHtmlTester
     {
         MyFormState state = new MyFormState();
         string connectionString = "";
+        string assemblyName = "";
 
         Dictionary<string, string> mystyle = new Dictionary<string, string>();
         Evaluator se = new Evaluator("", "", new string[] { Directory.GetCurrentDirectory() + "\\Microsoft.Office.Interop.Excel.dll" });
@@ -43,7 +44,8 @@ namespace SqlClrHtmlTester
             //Determine is load appdomain button is visible
             btnLoadAppDomain.Visible = Convert.ToBoolean(ConfigurationManager.AppSettings["showLoadAppDomainButton"]);
             btnUnloadAppDomain.Visible = Convert.ToBoolean(ConfigurationManager.AppSettings["showUnLoadAppDomainButton"]);
-           
+            assemblyName = ConfigurationManager.AppSettings["assemblyName"];
+
             //Create output directory if not exists 
             if (Directory.Exists(ConfigurationManager.AppSettings["outputPath"]) == false)
             {
@@ -135,7 +137,7 @@ namespace SqlClrHtmlTester
             if (listBoxConnection.Items.Count > 0)
             {
                 listBoxConnection.SelectedIndex = 0;
-                BindAssemblyList("SimpleTalk.SQLCLR.SendMail");
+                BindAssemblyList(assemblyName);
             }
                 
             
@@ -474,7 +476,7 @@ MapStyleToCode(cmbStyle.Text)
             cmbDatabase.Text = splitter[0];
 
           
-            BindAssemblyList("SimpleTalk.SQLCLR.SendMail");
+            BindAssemblyList(assemblyName);
             //labelConnectionInfo.Text = drawItem(s).Replace("\r\n", ".");
             labelConnectionInfo.Text = SetLabel();
 
@@ -629,8 +631,7 @@ MapStyleToCode(cmbStyle.Text)
 	+ (SELECT
 			COUNT(*) counter
 		FROM SYS.assemblies
-		WHERE NAME = 'SimpleTalk.SQLCLR.SendMail')
-	ALLTEST";
+		WHERE NAME = '" + assemblyName + "') ALLTEST";
             int magicNumber = Convert.ToInt16(DataAccess.ExecuteScalar(buildConnString(txtServer.Text, cmbDatabase.Text, txtUserName.Text, txtPassword.Text, cmbAuth.SelectedIndex == 0 ? true : false), query));
             isOk = magicNumber == 2 ? true : false;
             return isOk;
@@ -695,7 +696,7 @@ MapStyleToCode(cmbStyle.Text)
         {
             btnGetHtml.Enabled = true;
             //Refresh assembly information 
-            BindAssemblyList("SimpleTalk.SQLCLR.SendMail");
+            BindAssemblyList(assemblyName);
 
 
         }

@@ -199,7 +199,7 @@ namespace SqlClrHtmlTester
                     BindAssemblyList("SQLCLRReporter");
                 }
             }
-            else if (listBoxAssemblies.Text.Equals("SimpleTalk.SQLCLR.SendMail"))
+            else if (listBoxAssemblies.Text.Equals(assemblyName))
             {
                 bool isException = false;
                 DataAccess.ExecuteNonQuery(GetConnectionString(), @"SELECT * FROM EMAIL.CustomSendMailHelp('test');", out isException);
@@ -209,7 +209,7 @@ namespace SqlClrHtmlTester
                 }
                 else
                 {
-                    BindAssemblyList("SimpleTalk.SQLCLR.SendMail");
+                    BindAssemblyList(assemblyName);
                 }
 
             }
