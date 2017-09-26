@@ -156,6 +156,8 @@ namespace SqlClrHtmlTester
             mystyle.Add("Brown style", "ST_BROWN");
             mystyle.Add("Horisontal minimal", "ST_HORISONTAL");
             mystyle.Add("No style", "ST_NO_STYLE");
+            mystyle.Add("Simple style", "ST_SIMPLE");
+            
             foreach (string s in mystyle.Keys)
                 cmbStyle.Items.Add(s);
         }
