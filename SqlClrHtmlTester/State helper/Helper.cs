@@ -46,6 +46,7 @@ namespace SqlClrHtmlTester
         {
             MyFormState state = null;
             XmlSerializer ser = new XmlSerializer(typeof(MyFormState));
+            String error = string.Empty;
             using (FileStream fs = File.OpenRead("config.xml"))
             {
                 try
@@ -54,6 +55,7 @@ namespace SqlClrHtmlTester
                 }
                 catch (Exception ex)
                 {
+                    error = ex.Message;
                     state = null;
                 }
                 return state;
