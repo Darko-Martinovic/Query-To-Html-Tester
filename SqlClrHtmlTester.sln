@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "..\..\Shared\Security\Security\Security.csproj", "{785F1AF2-B067-413D-80D4-5380508111AB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "..\..\Shared\Utilities\Utilities.csproj", "{0B13B327-75E2-4307-A3A1-1CF330EA70D3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlClrHtmlTester", "SqlClrHtmlTester\SqlClrHtmlTester.csproj", "{40263D77-3065-4328-AC0B-F8C025FB1E53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "..\..\Shared\Controls\Controls\Controls.csproj", "{A91F1440-2894-4417-A607-E87D2C9670E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "Controls\Controls\Controls.csproj", "{A91F1440-2894-4417-A607-E87D2C9670E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "Security\Security\Security.csproj", "{785F1AF2-B067-413D-80D4-5380508111AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{0B13B327-75E2-4307-A3A1-1CF330EA70D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{785F1AF2-B067-413D-80D4-5380508111AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{785F1AF2-B067-413D-80D4-5380508111AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{785F1AF2-B067-413D-80D4-5380508111AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{785F1AF2-B067-413D-80D4-5380508111AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B13B327-75E2-4307-A3A1-1CF330EA70D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B13B327-75E2-4307-A3A1-1CF330EA70D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B13B327-75E2-4307-A3A1-1CF330EA70D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B13B327-75E2-4307-A3A1-1CF330EA70D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{40263D77-3065-4328-AC0B-F8C025FB1E53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40263D77-3065-4328-AC0B-F8C025FB1E53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40263D77-3065-4328-AC0B-F8C025FB1E53}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,24 +25,19 @@ Global
 		{A91F1440-2894-4417-A607-E87D2C9670E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A91F1440-2894-4417-A607-E87D2C9670E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A91F1440-2894-4417-A607-E87D2C9670E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{785F1AF2-B067-413D-80D4-5380508111AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{785F1AF2-B067-413D-80D4-5380508111AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{785F1AF2-B067-413D-80D4-5380508111AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{785F1AF2-B067-413D-80D4-5380508111AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B13B327-75E2-4307-A3A1-1CF330EA70D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B13B327-75E2-4307-A3A1-1CF330EA70D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B13B327-75E2-4307-A3A1-1CF330EA70D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B13B327-75E2-4307-A3A1-1CF330EA70D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 5
-		SccProjectUniqueName0 = ..\\..\\Shared\\Security\\Security\\Security.csproj
-		SccProjectName0 = $/Tester/Tester/Security
-		SccLocalPath0 = ..\\..\\Shared\\Security\\Security
-		SccProjectUniqueName1 = ..\\..\\Shared\\Utilities\\Utilities.csproj
-		SccProjectName1 = $/Tester/Tester/SqlClrHtmlTester/Utilities
-		SccLocalPath1 = ..\\..\\Shared\\Utilities
-		SccProjectUniqueName2 = SqlClrHtmlTester\\SqlClrHtmlTester.csproj
-		SccProjectName2 = $/Tester/Tester/SqlClrHtmlTester/SqlClrHtmlTester
-		SccLocalPath2 = SqlClrHtmlTester
-		SccProjectUniqueName3 = ..\\..\\Shared\\Controls\\Controls\\Controls.csproj
-		SccProjectName3 = $/Tester/Tester/Controls
-		SccLocalPath3 = ..\\..\\Shared\\Controls\\Controls
-		SccLocalPath4 = .
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F46057D-D454-4C4E-A041-02E4533FB00B}
 	EndGlobalSection
 EndGlobal

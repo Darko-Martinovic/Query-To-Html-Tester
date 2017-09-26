@@ -12,10 +12,14 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
     <PublishUrl>D:\TEKUCI_POSLOVI\AAAA\</PublishUrl>
@@ -147,20 +151,6 @@
     <EmbeddedResource Include="OfficeDll\Microsoft.Office.Interop.Excel.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Controls\Controls\Controls.csproj">
-      <Project>{a91f1440-2894-4417-a607-e87d2c9670e5}</Project>
-      <Name>Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Shared\Utilities\Utilities.csproj">
-      <Project>{0b13b327-75e2-4307-a3a1-1cf330ea70d3}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\Cloud\Shared\Security\Security\Security.csproj">
-      <Project>{785f1af2-b067-413d-80d4-5380508111ab}</Project>
-      <Name>Security</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ExcelLarge.png" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +166,20 @@
     <EmbeddedResource Include="OfficeDll\Microsoft.Vbe.Interop.dll" />
     <EmbeddedResource Include="OfficeDll\office.dll" />
     <EmbeddedResource Include="OfficeDll\stdole.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Controls\Controls\Controls.csproj">
+      <Project>{a91f1440-2894-4417-a607-e87d2c9670e5}</Project>
+      <Name>Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Security\Security\Security.csproj">
+      <Project>{785f1af2-b067-413d-80d4-5380508111ab}</Project>
+      <Name>Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{0b13b327-75e2-4307-a3a1-1cf330ea70d3}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
