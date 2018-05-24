@@ -12,27 +12,29 @@ public class EmbeddedAssembly
 {
     // Version 1.3
 
-    static Dictionary<string, Assembly> dic = null;
+    static Dictionary<string, Assembly> _dic = null;
 
     /// <summary>
     /// Load Assembly, DLL from Embedded Resources into memory.
     /// </summary>
     /// <param name="embeddedResource">Embedded Resource string. Example: WindowsFormsApplication1.SomeTools.dll</param>
     /// <param name="fileName">File Name. Example: SomeTools.dll</param>
+    /// <param name="loadInMemory"></param>
+    /// <param name="pathToExtract"></param>
     public static void Load(string embeddedResource, string fileName, bool loadInMemory, string pathToExtract)
     {
-        if (dic == null)
-            dic = new Dictionary<string, Assembly>();
+        if (_dic == null)
+            _dic = new Dictionary<string, Assembly>();
 
         byte[] ba = null;
         Assembly asm = null;
-        Assembly curAsm = Assembly.GetCallingAssembly();
+        var curAsm = Assembly.GetCallingAssembly();
 
-        using (Stream stm = curAsm.GetManifestResourceStream(embeddedResource))
+        using (var stm = curAsm.GetManifestResourceStream(embeddedResource))
         {
             // Either the file is not existed or it is not mark as embedded resource
             if (stm == null)
-                throw new Exception(embeddedResource + " is not found in Embedded Resources.");
+                throw new Exception($"{embeddedResource} is not found in Embedded Resources.");
 
             // Get byte[] from the file from embedded resource
             ba = new byte[(int)stm.Length];
@@ -42,7 +44,7 @@ public class EmbeddedAssembly
                 asm = Assembly.Load(ba);
 
                 // Add the assembly/dll into dictionary
-                dic.Add(asm.FullName, asm);
+                _dic.Add(asm.FullName, asm);
                 //return;
             }
             catch
@@ -53,10 +55,10 @@ public class EmbeddedAssembly
             }
         }
 
-        bool fileOk = false;
-        string tempFile = "";
+        var fileOk = false;
+        var tempFile = "";
 
-        using (SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider())
+        using (var sha1 = new SHA1CryptoServiceProvider())
         {
             // Get the hash value from embedded DLL/assembly
             string fileHash = BitConverter.ToString(sha1.ComputeHash(ba)).Replace("-", string.Empty);
@@ -68,20 +70,11 @@ public class EmbeddedAssembly
             if (File.Exists(tempFile))
             {
                 // Get the hash value of the existed file
-                byte[] bb = File.ReadAllBytes(tempFile);
-                string fileHash2 = BitConverter.ToString(sha1.ComputeHash(bb)).Replace("-", string.Empty);
+                var bb = File.ReadAllBytes(tempFile);
+                var fileHash2 = BitConverter.ToString(sha1.ComputeHash(bb)).Replace("-", string.Empty);
 
                 // Compare the existed DLL/assembly with the Embedded DLL/assembly
-                if (fileHash == fileHash2)
-                {
-                    // Same file
-                    fileOk = true;
-                }
-                else
-                {
-                    // Not same
-                    fileOk = false;
-                }
+                fileOk = fileHash == fileHash2;
             }
             else
             {
@@ -101,8 +94,8 @@ public class EmbeddedAssembly
             asm = Assembly.LoadFile(tempFile);
 
         // Add the loaded DLL/assembly into dictionary
-        if (dic.ContainsKey(asm.FullName) == false )
-            dic.Add(asm.FullName, asm);
+        if (asm != null && _dic.ContainsKey(asm.FullName) == false )
+            _dic.Add(asm.FullName, asm);
     }
 
     /// <summary>
@@ -112,11 +105,11 @@ public class EmbeddedAssembly
     /// <returns></returns>
     public static Assembly Get(string assemblyFullName)
     {
-        if (dic == null || dic.Count == 0)
+        if (_dic == null || _dic.Count == 0)
             return null;
 
-        if (dic.ContainsKey(assemblyFullName))
-            return dic[assemblyFullName];
+        if (_dic.ContainsKey(assemblyFullName))
+            return _dic[assemblyFullName];
 
         return null;
 

@@ -13,13 +13,7 @@ namespace Shared.Controls
         /// <summary>
         /// This prevents the Popup from Activating
         /// </summary>
-        protected override bool ShowWithoutActivation
-        {
-            get
-            {
-                return true;
-            }
-        }
+        protected override bool ShowWithoutActivation { get; } = true;
 
         protected override CreateParams CreateParams
         {
@@ -28,7 +22,7 @@ namespace Shared.Controls
                 //make sure Top Most property on form is set to false
                 //otherwise this doesn't work
                 int WS_EX_TOPMOST = 0x00000008;
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ExStyle |= WS_EX_TOPMOST;
                 return cp;
             }
@@ -46,16 +40,16 @@ namespace Shared.Controls
         internal event EventHandler ContextMenuOpened;
         internal event EventHandler ContextMenuClosed;
 
-        private bool mouseOnClose = false;
-        private bool mouseOnLink = false;
-        private bool mouseOnOptions = false;
-        private int heightOfTitle;
+        private bool _mouseOnClose;
+        private bool _mouseOnLink;
+        private bool _mouseOnOptions;
+        private int _heightOfTitle;
 
         #region GDI objects
 
-        private bool gdiInitialized = false;
-        private Rectangle rcBody;
-        private Rectangle rcHeader;
+        private bool _gdiInitialized = false;
+        private Rectangle _rcBody;
+        private Rectangle _rcHeader;
         private Rectangle rcForm;
         private LinearGradientBrush brushBody;
         private LinearGradientBrush brushHeader;
@@ -97,9 +91,9 @@ namespace Shared.Controls
         {
             if (this.Visible)
             {
-                mouseOnClose = false;
-                mouseOnLink = false;
-                mouseOnOptions = false;
+                _mouseOnClose = false;
+                _mouseOnLink = false;
+                _mouseOnOptions = false;
             }
         }
 
@@ -178,17 +172,17 @@ namespace Shared.Controls
                 {
                     return new RectangleF(
                         Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right + Parent.ContentPadding.Left,
-                        Parent.HeaderHeight + Parent.TitlePadding.Top + heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
+                        Parent.HeaderHeight + Parent.TitlePadding.Top + _heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
                         this.Width - Parent.ImagePadding.Left - Parent.ImageSize.Width - Parent.ImagePadding.Right - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5,
-                        this.Height - Parent.HeaderHeight - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
+                        this.Height - Parent.HeaderHeight - Parent.TitlePadding.Top - _heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
                 }
                 else
                 {
                     return new RectangleF(
                         Parent.ContentPadding.Left,
-                        Parent.HeaderHeight + Parent.TitlePadding.Top + heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
+                        Parent.HeaderHeight + Parent.TitlePadding.Top + _heightOfTitle + Parent.TitlePadding.Bottom + Parent.ContentPadding.Top,
                         this.Width - Parent.ContentPadding.Left - Parent.ContentPadding.Right - 16 - 5,
-                        this.Height - Parent.HeaderHeight - Parent.TitlePadding.Top - heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
+                        this.Height - Parent.HeaderHeight - Parent.TitlePadding.Top - _heightOfTitle - Parent.TitlePadding.Bottom - Parent.ContentPadding.Top - Parent.ContentPadding.Bottom - 1);
                 }
             }
         }
@@ -196,24 +190,12 @@ namespace Shared.Controls
         /// <summary>
         /// gets the rectangle of the close button.
         /// </summary>
-        private Rectangle RectClose
-        {
-            get
-            {
-                return new Rectangle(this.Width - 5 - 16, Parent.HeaderHeight + 3, 16, 16);
-            }
-        }
+        private Rectangle RectClose => new Rectangle(this.Width - 5 - 16, Parent.HeaderHeight + 3, 16, 16);
 
         /// <summary>
         /// Gets the rectangle of the options button.
         /// </summary>
-        private Rectangle RectOptions
-        {
-            get
-            {
-                return new Rectangle(this.Width - 5 - 16, Parent.HeaderHeight + 3 + 16 + 5, 16, 16);
-            }
-        }
+        private Rectangle RectOptions => new Rectangle(this.Width - 5 - 16, Parent.HeaderHeight + 3 + 16 + 5, 16, 16);
 
         /// <summary>
         /// Update form to display hover styles when the mouse moves over the notification form.
@@ -224,13 +206,13 @@ namespace Shared.Controls
         {
             if (Parent.ShowCloseButton)
             {
-                mouseOnClose = RectClose.Contains(e.X, e.Y);
+                _mouseOnClose = RectClose.Contains(e.X, e.Y);
             }
             if (Parent.ShowOptionsButton)
             {
-                mouseOnOptions = RectOptions.Contains(e.X, e.Y);
+                _mouseOnOptions = RectOptions.Contains(e.X, e.Y);
             }
-            mouseOnLink = RectContentText.Contains(e.X, e.Y);
+            _mouseOnLink = RectContentText.Contains(e.X, e.Y);
             Invalidate();
         }
 
@@ -243,20 +225,17 @@ namespace Shared.Controls
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-                if (RectClose.Contains(e.X, e.Y) && (CloseClick != null))
+                if (RectClose.Contains(e.X, e.Y))
                 {
-                    CloseClick(this, EventArgs.Empty);
+                    CloseClick?.Invoke(this, EventArgs.Empty);
                 }
-                if (RectContentText.Contains(e.X, e.Y) && (LinkClick != null))
+                if (RectContentText.Contains(e.X, e.Y))
                 {
-                    LinkClick(this, EventArgs.Empty);
+                    LinkClick?.Invoke(this, EventArgs.Empty);
                 }
                 if (RectOptions.Contains(e.X, e.Y) && (Parent.OptionsMenu != null))
                 {
-                    if (ContextMenuOpened != null)
-                    {
-                        ContextMenuOpened(this, EventArgs.Empty);
-                    }
+                    ContextMenuOpened?.Invoke(this, EventArgs.Empty);
                     Parent.OptionsMenu.Show(this, new Point(RectOptions.Right - Parent.OptionsMenu.Width, RectOptions.Bottom));
                     Parent.OptionsMenu.Closed += new ToolStripDropDownClosedEventHandler(OptionsMenu_Closed);
                 }
@@ -281,14 +260,14 @@ namespace Shared.Controls
         /// <summary>
         /// Create all GDI objects used to paint the form.
         /// </summary>
-        private void AllocateGDIObjects()
+        private void AllocateGdiObjects()
         {
-            rcBody = new Rectangle(0, 0, this.Width, this.Height);
-            rcHeader = new Rectangle(0, 0, this.Width, Parent.HeaderHeight);
+            _rcBody = new Rectangle(0, 0, this.Width, this.Height);
+            _rcHeader = new Rectangle(0, 0, this.Width, Parent.HeaderHeight);
             rcForm = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
 
-            brushBody = new LinearGradientBrush(rcBody, Parent.BodyColor, GetLighterColor(Parent.BodyColor), LinearGradientMode.Vertical);
-            brushHeader = new LinearGradientBrush(rcHeader, Parent.HeaderColor, GetDarkerColor(Parent.HeaderColor), LinearGradientMode.Vertical);
+            brushBody = new LinearGradientBrush(_rcBody, Parent.BodyColor, GetLighterColor(Parent.BodyColor), LinearGradientMode.Vertical);
+            brushHeader = new LinearGradientBrush(_rcHeader, Parent.HeaderColor, GetDarkerColor(Parent.HeaderColor), LinearGradientMode.Vertical);
             brushButtonHover = new SolidBrush(Parent.ButtonHoverColor);
             penButtonBorder = new Pen(Parent.ButtonBorderColor);
             penContent = new Pen(Parent.ContentColor, 2);
@@ -298,15 +277,15 @@ namespace Shared.Controls
             brushContent = new SolidBrush(Parent.ContentColor);
             brushTitle = new SolidBrush(Parent.TitleColor);
 
-            gdiInitialized = true;
+            _gdiInitialized = true;
         }
 
         /// <summary>
         /// Free all GDI objects.
         /// </summary>
-        private void DisposeGDIObjects()
+        private void DisposeGdiObjects()
         {
-            if (gdiInitialized)
+            if (_gdiInitialized)
             {
                 brushBody.Dispose();
                 brushHeader.Dispose();
@@ -328,14 +307,14 @@ namespace Shared.Controls
         /// <param name="e"></param>
         private void PopupNotifierForm_Paint(object sender, PaintEventArgs e)
         {
-            if (!gdiInitialized)
+            if (!_gdiInitialized)
             {
-                AllocateGDIObjects();
+                AllocateGdiObjects();
             }
 
             // draw window
-            e.Graphics.FillRectangle(brushBody, rcBody);
-            e.Graphics.FillRectangle(brushHeader, rcHeader);
+            e.Graphics.FillRectangle(brushBody, _rcBody);
+            e.Graphics.FillRectangle(brushHeader, _rcHeader);
             e.Graphics.DrawRectangle(penBorder, rcForm);
             if (Parent.ShowGrip)
             {
@@ -343,7 +322,7 @@ namespace Shared.Controls
             }
             if (Parent.ShowCloseButton)
             {
-                if (mouseOnClose)
+                if (_mouseOnClose)
                 {
                     e.Graphics.FillRectangle(brushButtonHover, RectClose);
                     e.Graphics.DrawRectangle(penButtonBorder, RectClose);
@@ -353,7 +332,7 @@ namespace Shared.Controls
             }
             if (Parent.ShowOptionsButton)
             {
-                if (mouseOnOptions)
+                if (_mouseOnOptions)
                 {
                     e.Graphics.FillRectangle(brushButtonHover, RectOptions);
                     e.Graphics.DrawRectangle(penButtonBorder, RectOptions);
@@ -370,34 +349,34 @@ namespace Shared.Controls
 
             if (Parent.IsRightToLeft)
             {
-                heightOfTitle = (int)e.Graphics.MeasureString("A", Parent.TitleFont).Height;
+                _heightOfTitle = (int)e.Graphics.MeasureString("A", Parent.TitleFont).Height;
 
                 // the value 30 is because of x close icon
-                int titleX2 = this.Width - 30;// Parent.TitlePadding.Right;
+                var titleX2 = this.Width - 30;// Parent.TitlePadding.Right;
 
                 // draw title right to left
-                StringFormat headerFormat = new StringFormat(StringFormatFlags.DirectionRightToLeft);
+                var headerFormat = new StringFormat(StringFormatFlags.DirectionRightToLeft);
                 e.Graphics.DrawString(Parent.TitleText, Parent.TitleFont, brushTitle, titleX2, Parent.HeaderHeight + Parent.TitlePadding.Top, headerFormat);
 
                 // draw content text, optionally with a bold part
-                this.Cursor = mouseOnLink ? Cursors.Hand : Cursors.Default;
-                Brush brushText = mouseOnLink ? brushLinkHover : brushContent;
+                this.Cursor = _mouseOnLink ? Cursors.Hand : Cursors.Default;
+                var brushText = _mouseOnLink ? brushLinkHover : brushContent;
 
                 // draw content right to left
-                StringFormat contentFormat = new StringFormat(StringFormatFlags.DirectionRightToLeft);
+                var contentFormat = new StringFormat(StringFormatFlags.DirectionRightToLeft);
                 e.Graphics.DrawString(Parent.ContentText, Parent.ContentFont, brushText, RectContentText, contentFormat);
             }
             else
             {
                 // calculate height of title
-                heightOfTitle = (int)e.Graphics.MeasureString("A", Parent.TitleFont).Height;
-                int titleX = Parent.TitlePadding.Left;
+                _heightOfTitle = (int)e.Graphics.MeasureString("A", Parent.TitleFont).Height;
+                var titleX = Parent.TitlePadding.Left;
                 if (Parent.Image != null)
                     titleX += Parent.ImagePadding.Left + Parent.ImageSize.Width + Parent.ImagePadding.Right;
                 e.Graphics.DrawString(Parent.TitleText, Parent.TitleFont, brushTitle, titleX, Parent.HeaderHeight + Parent.TitlePadding.Top);
                 // draw content text, optionally with a bold part
-                this.Cursor = mouseOnLink ? Cursors.Hand : Cursors.Default;
-                Brush brushText = mouseOnLink ? brushLinkHover : brushContent;
+                this.Cursor = _mouseOnLink ? Cursors.Hand : Cursors.Default;
+                Brush brushText = _mouseOnLink ? brushLinkHover : brushContent;
                 e.Graphics.DrawString(Parent.ContentText, Parent.ContentFont, brushText, RectContentText);
             }
         }
@@ -410,7 +389,7 @@ namespace Shared.Controls
         {
             if (disposing)
             {
-                DisposeGDIObjects();
+                DisposeGdiObjects();
             }
             base.Dispose(disposing);
         }
