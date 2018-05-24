@@ -194,7 +194,7 @@
             this.itemExcel.Name = "itemExcel";
             this.itemExcel.Size = new System.Drawing.Size(169, 22);
             this.itemExcel.Text = "Save as Excel ";
-            this.itemExcel.Click += new System.EventHandler(this.itemExcel_Click);
+            this.itemExcel.Click += new System.EventHandler(this.ItemExcel_Click);
             // 
             // btnExcel
             // 

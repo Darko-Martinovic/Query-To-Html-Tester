@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -19,8 +18,8 @@ namespace SqlClrHtmlTester
             {
                 string html = webBrowser1.DocumentText;
                 Clipboard.SetText(html);
-                pn.Image = SqlClrHtmlTester.Properties.Resources.Clipboard;
-                string fileName = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
+                pn.Image = Properties.Resources.Clipboard;
+                var fileName = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
                 _path = fileName;
                 File.WriteAllText(fileName, html, Encoding.UTF8);
                 pn.Popup();
@@ -28,7 +27,7 @@ namespace SqlClrHtmlTester
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error copying to clipboard! Error :" + ex.Message);
+                MessageBox.Show($@"Error copying to clipboard! Error :{ex.Message}");
             }
 
         }
@@ -39,28 +38,28 @@ namespace SqlClrHtmlTester
                 return;
             try
             {
-                string html = webBrowser1.DocumentText;
-                string fileName = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + ".html";
+                var html = webBrowser1.DocumentText;
+                var fileName = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text + DateTime.Now.ToString("yyyyMMddHHmmss") + ".html";
                 _path = fileName;
                 File.WriteAllText(fileName, html, Encoding.UTF8);
-                pn.Image = SqlClrHtmlTester.Properties.Resources.HTML;
+                pn.Image = Properties.Resources.HTML;
                 pn.Popup();
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error while making output : " + ex.Message);
+                MessageBox.Show($@"Error while making output : {ex.Message}");
             }
 
         }
 
-        private void itemExcel_Click(object sender, EventArgs e)
+        private void ItemExcel_Click(object sender, EventArgs e)
         {
             if (Directory.Exists(ConfigurationManager.AppSettings["outputPath"]) == false)
                 return;
-            string html = webBrowser1.DocumentText;
-            string result = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss");
-            string fileName = result + ".html";
+            var html = webBrowser1.DocumentText;
+            var result = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss");
+            var fileName = result + ".html";
             _path = fileName;
             System.IO.File.WriteAllText(fileName, html, Encoding.UTF8);
             if (File.Exists(Directory.GetCurrentDirectory() + "\\Microsoft.Office.Interop.Excel.dll") == false)
@@ -72,7 +71,7 @@ namespace SqlClrHtmlTester
             }
             if (_compObj == null)
             {
-                string codeToCompile = ConfigurationManager.AppSettings["codeToCompile"];
+                var codeToCompile = ConfigurationManager.AppSettings["codeToCompile"];
                 _compObj = _se.Compile(codeToCompile.ToString().Trim(), true, "SqlServerCentral", ref _errorMessage);
             }
             if (_compObj != null)
@@ -88,10 +87,10 @@ namespace SqlClrHtmlTester
 
                 }
                 else
-                    MessageBox.Show("I'm not able to save content as xlsx file. An error occured :" + em);
+                    MessageBox.Show($@"I'm not able to save content as xlsx file. An error occured :{em}");
             }
             else
-                MessageBox.Show("I'm not able to save content as xlsx file. An error occured :" + _errorMessage);
+                MessageBox.Show($@"I'm not able to save content as xlsx file. An error occured :{_errorMessage}");
 
 
         }
