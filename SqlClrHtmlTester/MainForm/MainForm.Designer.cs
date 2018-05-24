@@ -164,7 +164,7 @@
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.Size = new System.Drawing.Size(772, 453);
             this.webBrowser1.TabIndex = 0;
-            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
+            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WebBrowser1_DocumentCompleted);
             // 
             // cmsBrowser
             // 
@@ -450,8 +450,8 @@
             this.listBoxConnection.Size = new System.Drawing.Size(362, 378);
             this.listBoxConnection.TabIndex = 44;
             this.listBoxConnection.TabStop = false;
-            this.listBoxConnection.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lstConnections_DrawItem);
-            this.listBoxConnection.SelectedIndexChanged += new System.EventHandler(this.lstConnections_SelectedIndexChanged);
+            this.listBoxConnection.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.LstConnections_DrawItem);
+            this.listBoxConnection.SelectedIndexChanged += new System.EventHandler(this.LstConnections_SelectedIndexChanged);
             // 
             // btnTestConnection
             // 
@@ -493,7 +493,7 @@
             this.cmbAuth.Name = "cmbAuth";
             this.cmbAuth.Size = new System.Drawing.Size(249, 24);
             this.cmbAuth.TabIndex = 6;
-            this.cmbAuth.SelectedValueChanged += new System.EventHandler(this.cmbAuth_SelectedValueChanged);
+            this.cmbAuth.SelectedValueChanged += new System.EventHandler(this.CmbAuth_SelectedValueChanged);
             // 
             // label5
             // 

@@ -9,24 +9,24 @@ namespace SqlClrHtmlTester
     {
         public static DataSet GetDataSet(string connectionString, string commandText, List<SqlParameter> listOfParams, out string error)
         {
-            DataSet ds = new DataSet();
+            var ds = new DataSet();
             error = string.Empty;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(connectionString))
                 {
 
-                    using (SqlCommand command = new SqlCommand(commandText, cnn))
+                    using (var command = new SqlCommand(commandText, cnn))
                     {
                         cnn.Open();
                         if (listOfParams != null)
                         {
-                            foreach (SqlParameter p in listOfParams)
+                            foreach (var p in listOfParams)
                             {
                                 command.Parameters.Add(p);
                             }
                         }
-                        using (SqlDataAdapter sqlAdp = new SqlDataAdapter())
+                        using (var sqlAdp = new SqlDataAdapter())
                         {
                             sqlAdp.SelectCommand = command;
                             sqlAdp.Fill(ds);
@@ -43,20 +43,25 @@ namespace SqlClrHtmlTester
         }
         public static string GetConnectionString(string serverName, string dataBaseName,bool isWindowsAuth, string userName, string password)
         {
-            string connectionString = "Data Source=" + serverName + ";Integrated Security=SSPI;Initial Catalog=" + dataBaseName;
+            var connectionString = $"Data Source={serverName};Integrated Security=SSPI;Initial Catalog={dataBaseName}";
             if (isWindowsAuth == false)
-                connectionString = "Data Source=" + serverName + ";User Id=" + userName + "; password= " + password + ";Initial Catalog=" + dataBaseName;
+                connectionString =
+                    $"Data Source={serverName};User Id={userName}; password= {password};Initial Catalog={dataBaseName}";
             return connectionString;
         }
-        public static string GetHtml(string connectionString, string query, string queryParams, string caption, string footer, string style, string rotate, string rco)
+        public static string GetHtml(string connectionString, string query, string queryParams, string caption,
+            string footer, string style, string rotate, string rco)
         {
-            string result = "";
+            var result = "";
             try
             {
-                using (SqlConnection cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(connectionString))
                 {
 
-                    using (SqlCommand command = new SqlCommand("SELECT EMAIL.QueryToHtml(@query ,@queryParams,@caption,@footer,@rotate,@rco,@style);SELECT EMAIL.CleanMemory()", cnn))
+                    using (var command =
+                        new SqlCommand(
+                            "SELECT EMAIL.QueryToHtml(@query ,@queryParams,@caption,@footer,@rotate,@rco,@style);SELECT EMAIL.CleanMemory()",
+                            cnn))
 
                     {
                         //query
@@ -101,13 +106,13 @@ namespace SqlClrHtmlTester
         }
         public static string ConCatHtml(string connectionString, string mainHtml, string addOnHtml)
         {
-            string result = "";
+            var result = "";
             try
             {
-                using (SqlConnection cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(connectionString))
                 {
 
-                    using (SqlCommand command = new SqlCommand("SELECT EMAIL.ConCatHtml(@mainHtml,@addOnHtml);SELECT EMAIL.CleanMemory()", cnn))
+                    using (var command = new SqlCommand("SELECT EMAIL.ConCatHtml(@mainHtml,@addOnHtml);SELECT EMAIL.CleanMemory()", cnn))
                     {
                         command.Parameters.Add(new SqlParameter("@mainHtml", SqlDbType.NVarChar, -1));
                         command.Parameters["@mainHtml"].Value = mainHtml;
@@ -130,13 +135,13 @@ namespace SqlClrHtmlTester
 
         public static object ExecuteScalar(string connectionString, string query)
         {
-            object retvalue = null;
+            object retvalue;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(connectionString))
                 {
 
-                    using (SqlCommand command = new SqlCommand(query, cnn))
+                    using (var command = new SqlCommand(query, cnn))
                     {
                         cnn.Open();
                         retvalue = command.ExecuteScalar();
@@ -153,14 +158,14 @@ namespace SqlClrHtmlTester
 
         public static object ExecuteNonQuery(string connectionString, string query,out bool isException)
         {
-            object retvalue = null;
+            object retvalue;
             isException = false;
             try
             {
-                using (SqlConnection cnn = new SqlConnection(connectionString))
+                using (var cnn = new SqlConnection(connectionString))
                 {
 
-                    using (SqlCommand command = new SqlCommand(query, cnn))
+                    using (var command = new SqlCommand(query, cnn))
                     {
                         cnn.Open();
                         retvalue = command.ExecuteNonQuery();

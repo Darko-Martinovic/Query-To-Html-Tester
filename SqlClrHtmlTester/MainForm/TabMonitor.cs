@@ -15,19 +15,20 @@ namespace SqlClrHtmlTester
             listBoxAssemblies.Items.Clear();
 
             
-            connectionString = DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text, cmbAuth.SelectedIndex == 0 ? true : false, txtUserName.Text, txtPassword.Text);
+            _connectionString = DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text,
+                cmbAuth.SelectedIndex == 0, txtUserName.Text, txtPassword.Text);
 
-            bool hasViewStatePermission = Monitor.HasViewServerStatePermission(connectionString);
+            var hasViewStatePermission = Monitor.HasViewServerStatePermission(_connectionString);
             if (hasViewStatePermission == false)
             {
                 return;
             }
 
-            ds = Monitor.GetAssemblies(connectionString);
-            int i = 0;
-            int j = 0;
+            _ds = Monitor.GetAssemblies(_connectionString);
+            var i = 0;
+            var j = 0;
 
-            foreach (DataRow r in ds.Tables[0].Rows)
+            foreach (DataRow r in _ds.Tables[0].Rows)
             {
                 listBoxAssemblies.Items.Add(r["name"].ToString());
                 if (name != null)
@@ -58,7 +59,7 @@ namespace SqlClrHtmlTester
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in binding assembly information : " + ex.Message);
+                MessageBox.Show($@"Error in binding assembly information : {ex.Message}");
             }
 
         }
@@ -70,7 +71,7 @@ namespace SqlClrHtmlTester
                 {
                     return;
                 }
-                DataTable dt = details.Tables[0];
+                var dt = details.Tables[0];
                 if (dt.Rows.Count > 0)
                 {
                     txtAppDomainAddress.Text = dt.Rows[0]["appdomain_address"].ToString();
@@ -78,10 +79,10 @@ namespace SqlClrHtmlTester
                 }
                 else
                 {
-                    txtAppDomainAddress.Text = "N/A";
-                    txtLoadTime.Text = "N/A";
+                    txtAppDomainAddress.Text = @"N/A";
+                    txtLoadTime.Text = @"N/A";
                 }
-                DataTable dtAppDomains = details.Tables[1];
+                var dtAppDomains = details.Tables[1];
                 if (dtAppDomains.Rows.Count > 0)
                 {
                     txtAppDomainName.Text = dtAppDomains.Rows[0]["appdomain_name"].ToString();
@@ -96,51 +97,36 @@ namespace SqlClrHtmlTester
                     txtCost.Text = Convert.ToInt64(dtAppDomains.Rows[0]["cost"]).ToString("N0");
                     txtValue.Text = Convert.ToInt64(dtAppDomains.Rows[0]["value"]).ToString("N0");
 
-                    if (dtAppDomains.Columns.Contains("total_processor_time_ms"))
-                    {
-                        totalProcesorTime.Text = Convert.ToInt64(dtAppDomains.Rows[0]["total_processor_time_ms"]).ToString("N0");
-                    }
-                    else
-                    {
-                        totalProcesorTime.Text = "N/A";
-                    }
-                    if (dtAppDomains.Columns.Contains("total_allocated_memory_kb"))
-                    {
-                        totalAllocatedMemory.Text = Convert.ToInt64(dtAppDomains.Rows[0]["total_allocated_memory_kb"]).ToString("N0");
-                    }
-                    else
-                    {
-                        totalAllocatedMemory.Text = "N/A";
-                    }
-                    if (dtAppDomains.Columns.Contains("survived_memory_kb"))
-                    {
-                        txtSurvivedMemory.Text = Convert.ToInt64(dtAppDomains.Rows[0]["survived_memory_kb"]).ToString("N0");
-                    }
-                    else
-                    {
-                        txtSurvivedMemory.Text = "N/A";
-                    }
+                    totalProcesorTime.Text = dtAppDomains.Columns.Contains("total_processor_time_ms")
+                        ? Convert.ToInt64(dtAppDomains.Rows[0]["total_processor_time_ms"]).ToString("N0")
+                        : "N/A";
+                    totalAllocatedMemory.Text = dtAppDomains.Columns.Contains("total_allocated_memory_kb")
+                        ? Convert.ToInt64(dtAppDomains.Rows[0]["total_allocated_memory_kb"]).ToString("N0")
+                        : "N/A";
+                    txtSurvivedMemory.Text = dtAppDomains.Columns.Contains("survived_memory_kb")
+                        ? Convert.ToInt64(dtAppDomains.Rows[0]["survived_memory_kb"]).ToString("N0")
+                        : "N/A";
 
 
                 }
                 else
                 {
-                    txtAppDomainName.Text = "N/A";
-                    txtCreationTime.Text = "N/A";
-                    txtState.Text = "N/A";
-                    txtStrongRefCount.Text = "N/A";
-                    txtWeakRefCount.Text = "N/A";
-                    txtCost.Text = "N/A";
-                    txtValue.Text = "N/A";
-                    totalProcesorTime.Text = "N/A";
-                    totalAllocatedMemory.Text = "N/A";
-                    txtSurvivedMemory.Text = "N/A";
+                    txtAppDomainName.Text = @"N/A";
+                    txtCreationTime.Text = @"N/A";
+                    txtState.Text = @"N/A";
+                    txtStrongRefCount.Text = @"N/A";
+                    txtWeakRefCount.Text = @"N/A";
+                    txtCost.Text = @"N/A";
+                    txtValue.Text = @"N/A";
+                    totalProcesorTime.Text = @"N/A";
+                    totalAllocatedMemory.Text = @"N/A";
+                    txtSurvivedMemory.Text = @"N/A";
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in binding assembly details information : " + ex.Message);
+                MessageBox.Show($@"Error in binding assembly details information : {ex.Message}");
             }
 
         }
@@ -149,9 +135,9 @@ namespace SqlClrHtmlTester
 
         private void listBoxAssemblies_SelectedIndexChanged(object sender, EventArgs e)
         {
-            BindAssembly(ds.Tables[0].Rows[listBoxAssemblies.SelectedIndex]);
-            string name = ds.Tables[0].Rows[listBoxAssemblies.SelectedIndex]["name"].ToString();
-            DataSet details = Monitor.GetAssemblyDetails(connectionString, name);
+            BindAssembly(_ds.Tables[0].Rows[listBoxAssemblies.SelectedIndex]);
+            var name = _ds.Tables[0].Rows[listBoxAssemblies.SelectedIndex]["name"].ToString();
+            var details = Monitor.GetAssemblyDetails(_connectionString, name);
             BindAssemblyDetails(details);
 
         }
@@ -159,9 +145,9 @@ namespace SqlClrHtmlTester
         private void listBoxAssemblies_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.DrawBackground();
-            Brush myBrush = Brushes.Black;
+            var myBrush = Brushes.Black;
 
-            string stringToDraw = listBoxAssemblies.Items[e.Index].ToString();
+            var stringToDraw = listBoxAssemblies.Items[e.Index].ToString();
             if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
                 e = new DrawItemEventArgs(e.Graphics,
                                           e.Font,
@@ -181,45 +167,45 @@ namespace SqlClrHtmlTester
 
         private void btnLoadAppDomain_Click(object sender, EventArgs e)
         {
-            if (txtAppDomainAddress.Text != "N/A")
+            if (txtAppDomainAddress.Text != @"N/A")
             {
-                MessageBox.Show("The application domain is already loaded");
+                MessageBox.Show(@"The application domain is already loaded",
+                    @"Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
             if (listBoxAssemblies.Text.Equals("SQLCLRReporter"))
             {
-                bool isException = false;
-                DataAccess.ExecuteNonQuery(GetConnectionString(), @"SELECT * FROM EMAIL.SqlClrReporterHelp('ConCatHtml') WHERE 1=2;", out isException);
+                DataAccess.ExecuteNonQuery(GetConnectionString(), @"SELECT * FROM EMAIL.SqlClrReporterHelp('ConCatHtml') WHERE 1=2;", out var isException);
                 if (isException)
                 {
-                    MessageBox.Show("I'm not able to load the application domain");
+                    MessageBox.Show(@"I'm not able to load the application domain", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
                     BindAssemblyList("SQLCLRReporter");
                 }
             }
-            else if (listBoxAssemblies.Text.Equals(assemblyName))
+            else if (listBoxAssemblies.Text.Equals(_assemblyName))
             {
-                bool isException = false;
-                DataAccess.ExecuteNonQuery(GetConnectionString(), @"SELECT * FROM EMAIL.CustomSendMailHelp('test');", out isException);
+                DataAccess.ExecuteNonQuery(GetConnectionString(), @"SELECT * FROM EMAIL.CustomSendMailHelp('test');", out var isException);
                 if (isException)
                 {
-                    MessageBox.Show("I'm not able to load the application domain");
+                    MessageBox.Show(@"I'm not able to load the application domain", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    BindAssemblyList(assemblyName);
+                    BindAssemblyList(_assemblyName);
                 }
 
             }
             else if (listBoxAssemblies.Text.Equals("Microsoft.SqlServer.Types"))
             {
-                bool isException = false;
-                DataAccess.ExecuteNonQuery(GetConnectionString(), @"declare @test geometry = 'POINT(1 1)';", out isException);
+                DataAccess.ExecuteNonQuery(GetConnectionString(), @"declare @test geometry = 'POINT(1 1)';", out var isException);
                 if (isException)
                 {
-                    MessageBox.Show("I'm not able to load the application domain");
+                    MessageBox.Show(@"I'm not able to load the application domain", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -229,35 +215,34 @@ namespace SqlClrHtmlTester
             }
             else
             {
-                MessageBox.Show("Not supported for assembly : " + listBoxAssemblies.Text);
+                MessageBox.Show($@"Not supported for assembly : {listBoxAssemblies.Text}");
             }
         }
-        private string GetConnectionString()
-        {
-            return DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text, cmbAuth.SelectedIndex == 0 ? true : false, txtUserName.Text, txtPassword.Text);
-        }
+        private string GetConnectionString() => DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text,
+            cmbAuth.SelectedIndex == 0 , txtUserName.Text, txtPassword.Text);
+
         private void btnUnLoadAppDomain_Click(object sender, EventArgs e)
         {
-            SqlClientPermission sqlPerm =
+            var sqlPerm =
                     new SqlClientPermission(PermissionState.Unrestricted);
             sqlPerm.Assert();
             if (txtAppDomainAddress.Text.Equals("N/A"))
             {
-                MessageBox.Show("The application domain is not loaded");
+                MessageBox.Show(@"The application domain is not loaded");
                 return;
             }
             btnUnloadAppDomain.Enabled = false;
             btnLoadAppDomain.Enabled = false;
             btnGetHtml.Enabled = false;
-            string permissionSet = txtPermissionSet.Text;
-            connectionString = DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text, cmbAuth.SelectedIndex == 0 ? true : false, txtUserName.Text, txtPassword.Text);
-            if (Monitor.ReleaseMemory(connectionString, "[" + listBoxAssemblies.Text + "]", permissionSet))
+            var permissionSet = txtPermissionSet.Text;
+            _connectionString = DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text, cmbAuth.SelectedIndex == 0, txtUserName.Text, txtPassword.Text);
+            if (Monitor.ReleaseMemory(_connectionString, "[" + listBoxAssemblies.Text + "]", permissionSet))
             {
                 BindAssemblyList(listBoxAssemblies.Text);
             }
             else
             {
-                MessageBox.Show("I'm not able to unload the application domain!");
+                MessageBox.Show(@"I'm not able to unload the application domain!");
             }
             btnUnloadAppDomain.Enabled = true;
             btnLoadAppDomain.Enabled = true;

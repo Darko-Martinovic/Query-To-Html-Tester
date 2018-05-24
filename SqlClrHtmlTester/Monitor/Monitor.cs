@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -12,17 +8,19 @@ namespace SqlClrHtmlTester
     {
         public static DataSet GetAssemblies(string connectionString)
         {
-            string commandText = @"SELECT 
+            var commandText = @"SELECT 
                                         USER_NAME(principal_id) UserName,*
                                    FROM sys.assemblies;
 ";
-            string error;
-            DataSet ds = DataAccess.GetDataSet(connectionString, commandText, null, out error);
+            var ds = DataAccess.GetDataSet(connectionString, commandText, null, out var error);
             return ds;
         }
         public static DataSet GetAssemblyDetails(string connectionString, string assmblyName)
         {
-            string commandText = @"SELECT
+            var listOfParams = new List<SqlParameter>();
+            var assName = new SqlParameter("@name", SqlDbType.NVarChar, 128) {Value = assmblyName};
+            listOfParams.Add(assName);
+            var ds = DataAccess.GetDataSet(connectionString, @"SELECT
 	assembly_id
 	,'0x' + CONVERT(VARCHAR(16), appdomain_address, 2) appdomain_address
 	,load_time
@@ -41,29 +39,22 @@ WHERE appdomain_address = (SELECT
 				a.assembly_id
 			FROM sys.assemblies a
 			WHERE name = @name))
-";
-            string error;
-            List<SqlParameter> listOfParams = new List<SqlParameter>();
-            SqlParameter assName = new SqlParameter("@name", SqlDbType.NVarChar, 128);
-            assName.Value = assmblyName;
-            listOfParams.Add(assName);
-            DataSet ds = DataAccess.GetDataSet(connectionString, commandText, listOfParams, out error);
+", listOfParams, out _);
             return ds;
         }
 
         public static bool HasViewServerStatePermission(string connectionString)
         {
-            string command = @"SELECT
+            var command = @"SELECT
 	HAS_PERMS_BY_NAME(NULL, NULL, 'VIEW SERVER STATE');  
 ";
-            object hasPerm = DataAccess.ExecuteScalar(connectionString, command);
-            bool hasViewStatePerm = hasPerm == null || (int)hasPerm == 0 ? false : true;
+            var hasPerm = DataAccess.ExecuteScalar(connectionString, command);
+            var hasViewStatePerm = hasPerm != null && (int)hasPerm != 0;
             return hasViewStatePerm;
         }
 
         public static bool ReleaseMemory(string connectionString, string assName, string permissionLevel)
         {
-            bool isException = false;
             var endPerm = "";
             var startPerm = "";
             if (permissionLevel.Contains("UNSAFE"))
@@ -85,14 +76,14 @@ WHERE appdomain_address = (SELECT
             {
                 return false;
             }
-            string command = @"ALTER ASSEMBLY " + assName + 
+            var command = @"ALTER ASSEMBLY " + assName + 
 " WITH PERMISSION_SET = " + startPerm + ";";
-            DataAccess.ExecuteNonQuery(connectionString, command,out isException);
+            DataAccess.ExecuteNonQuery(connectionString, command,out var isException);
             command = @"ALTER ASSEMBLY " + assName + 
 " WITH PERMISSION_SET = " + endPerm + ";";
-            object retValue = DataAccess.ExecuteNonQuery(connectionString, command, out isException);
+            var retValue = DataAccess.ExecuteNonQuery(connectionString, command, out isException);
 
-            return isException == false ? true : false;
+            return isException == false;
 
         }
     }

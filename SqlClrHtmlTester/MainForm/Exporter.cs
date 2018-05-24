@@ -21,7 +21,7 @@ namespace SqlClrHtmlTester
                 Clipboard.SetText(html);
                 pn.Image = SqlClrHtmlTester.Properties.Resources.Clipboard;
                 string fileName = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
-                path = fileName;
+                _path = fileName;
                 File.WriteAllText(fileName, html, Encoding.UTF8);
                 pn.Popup();
 
@@ -41,7 +41,7 @@ namespace SqlClrHtmlTester
             {
                 string html = webBrowser1.DocumentText;
                 string fileName = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss") + ".html";
-                path = fileName;
+                _path = fileName;
                 File.WriteAllText(fileName, html, Encoding.UTF8);
                 pn.Image = SqlClrHtmlTester.Properties.Resources.HTML;
                 pn.Popup();
@@ -61,7 +61,7 @@ namespace SqlClrHtmlTester
             string html = webBrowser1.DocumentText;
             string result = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text.ToString() + DateTime.Now.ToString("yyyyMMddHHmmss");
             string fileName = result + ".html";
-            path = fileName;
+            _path = fileName;
             System.IO.File.WriteAllText(fileName, html, Encoding.UTF8);
             if (File.Exists(Directory.GetCurrentDirectory() + "\\Microsoft.Office.Interop.Excel.dll") == false)
             {
@@ -70,20 +70,20 @@ namespace SqlClrHtmlTester
                 EmbeddedAssembly.Load("SqlClrHtmlTester.OfficeDll.Microsoft.Office.Interop.Excel.dll", "Microsoft.Office.Interop.Excel.dll", false, fileName);
                                       // SqlClrHtmlTester
             }
-            if (compObj == null)
+            if (_compObj == null)
             {
                 string codeToCompile = ConfigurationManager.AppSettings["codeToCompile"];
-                compObj = se.Compile(codeToCompile.ToString().Trim(), true, "SqlServerCentral", ref errorMessage);
+                _compObj = _se.Compile(codeToCompile.ToString().Trim(), true, "SqlServerCentral", ref _errorMessage);
             }
-            if (compObj != null)
+            if (_compObj != null)
             {
                 string em = string.Empty;
-                Evaluator.Eval("EvalCode", compObj, result + ".html", ref em);
+                Evaluator.Eval("EvalCode", _compObj, result + ".html", ref em);
                 this.Focus();
                 if (em == string.Empty)
                 {
                     pn.Image = Properties.Resources.ExcelLarge;
-                    path = path.Replace(".html", ".xlsx");
+                    _path = _path.Replace(".html", ".xlsx");
                     pn.Popup();
 
                 }
@@ -91,7 +91,7 @@ namespace SqlClrHtmlTester
                     MessageBox.Show("I'm not able to save content as xlsx file. An error occured :" + em);
             }
             else
-                MessageBox.Show("I'm not able to save content as xlsx file. An error occured :" + errorMessage);
+                MessageBox.Show("I'm not able to save content as xlsx file. An error occured :" + _errorMessage);
 
 
         }
@@ -104,12 +104,12 @@ namespace SqlClrHtmlTester
             if (e.ClickedItem == mnuOpen)
             {
                 pn.Hide();
-                Process.Start(path);
+                Process.Start(_path);
             }
             else if (e.ClickedItem == mnuLocate)
             {
                 pn.Hide();
-                Process.Start("EXPLORER.EXE", "/select," + path);
+                Process.Start("EXPLORER.EXE", "/select," + _path);
             }
             else if (e.ClickedItem == mnuClose)
                 pn.Hide();
@@ -117,7 +117,7 @@ namespace SqlClrHtmlTester
         private void pn_Click(object sender, EventArgs e)
         {
             pn.Hide();
-            Process.Start("EXPLORER.EXE", "/select," + path);
+            Process.Start("EXPLORER.EXE", "/select," + _path);
         }
 
         #endregion
