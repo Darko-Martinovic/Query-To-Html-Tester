@@ -8,10 +8,21 @@ namespace SqlClrHtmlTester
 {
     public class Helper
     {
-        public static void WriteConfig(MyFormState state, string queryText, string paramsText, string cmbStyleText,
-                                       string serverText, string captionText, string footerText, string authText,
-                                       string userName, string passText, string databaseText, string rotateText,
-                                       string rcoText, string customStyleText, string listConnection)
+        public static void WriteConfig(MyFormState state,
+                                       string queryText,
+                                       string paramsText,
+                                       string cmbStyleText,
+                                       string serverText,
+                                       string captionText,
+                                       string footerText,
+                                       string authText,
+                                       string userName,
+                                       string passText,
+                                       string databaseText,
+                                       string rotateText,
+                                       string rcoText,
+                                       string customStyleText,
+                                       string listConnection)
         {
 
             var ws = new XmlWriterSettings {NewLineHandling = NewLineHandling.Entitize};
@@ -43,10 +54,10 @@ namespace SqlClrHtmlTester
         }
         public static MyFormState LoadConfig()
         {
-            MyFormState state = null;
             var ser = new XmlSerializer(typeof(MyFormState));
             using (var fs = File.OpenRead("config.xml"))
             {
+                MyFormState state = null;
                 try
                 {
                     state = (MyFormState)ser.Deserialize(fs);

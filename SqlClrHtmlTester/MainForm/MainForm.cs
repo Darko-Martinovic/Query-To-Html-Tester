@@ -391,8 +391,9 @@ namespace SqlClrHtmlTester
 );SELECT EMAIL.CleanMemory();";
 
             Clipboard.SetText(result);
-            pn.Image = SqlClrHtmlTester.Properties.Resources.sql_icon;
-            string fileName = ConfigurationManager.AppSettings["outputPath"] + txtCaption.Text + DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
+            pn.Image = Properties.Resources.sql_icon;
+            string fileName =
+                $"{ConfigurationManager.AppSettings["outputPath"]}{txtCaption.Text}{DateTime.Now:yyyyMMddHHmmss}.txt";
             _path = fileName;
             File.WriteAllText(fileName, result, Encoding.UTF8);
             pn.Popup();
@@ -461,7 +462,7 @@ namespace SqlClrHtmlTester
 
 
         private bool _isError = false;
-        private void cmbDatabase_MouseClick(object sender, MouseEventArgs e)
+        private void CmbDatabase_MouseClick(object sender, MouseEventArgs e)
         {
             if (cmbAuth.SelectedIndex != 0 && (txtUserName.Text.Trim().Equals(string.Empty) ||
                                                txtPassword.Text.Trim().Equals(string.Empty)))

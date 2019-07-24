@@ -55,32 +55,33 @@ WHERE appdomain_address = (SELECT
 
         public static bool ReleaseMemory(string connectionString, string assName, string permissionLevel)
         {
-            var endPerm = "";
-            var startPerm = "";
-            if (permissionLevel.Contains("UNSAFE"))
-            {
-                startPerm = "SAFE";
-                endPerm = "UNSAFE";
-            }
-            else if (permissionLevel.Contains("SAFE"))
-            {
-                startPerm = "UNSAFE";
-                endPerm = "SAFE";
-            }
-            else if (permissionLevel.Contains("EXTERNAL"))
-            {
-                startPerm = "SAFE";
-                endPerm = "EXTERNAL_ACCESS";
-            }
-            else
-            {
-                return false;
-            }
-            var command = @"ALTER ASSEMBLY " + assName + 
-" WITH PERMISSION_SET = " + startPerm + ";";
+			string endPerm;
+			string startPerm;
+			if (permissionLevel.Contains("UNSAFE"))
+			{
+				startPerm = "SAFE";
+				endPerm = "UNSAFE";
+			}
+			else if (permissionLevel.Contains("SAFE"))
+			{
+				startPerm = "UNSAFE";
+				endPerm = "SAFE";
+			}
+			else if (permissionLevel.Contains("EXTERNAL"))
+			{
+				startPerm = "SAFE";
+				endPerm = "EXTERNAL_ACCESS";
+			}
+			else
+			{
+				return false;
+			}
+			var command = $@"ALTER ASSEMBLY {assName} WITH PERMISSION_SET = {startPerm};";
+
             DataAccess.ExecuteNonQuery(connectionString, command,out var isException);
-            command = @"ALTER ASSEMBLY " + assName + 
-" WITH PERMISSION_SET = " + endPerm + ";";
+
+            command = $@"ALTER ASSEMBLY {assName} WITH PERMISSION_SET = {endPerm};";
+
             var retValue = DataAccess.ExecuteNonQuery(connectionString, command, out isException);
 
             return isException == false;

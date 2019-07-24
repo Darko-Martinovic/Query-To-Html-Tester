@@ -478,7 +478,7 @@
             this.cmbDatabase.Name = "cmbDatabase";
             this.cmbDatabase.Size = new System.Drawing.Size(249, 24);
             this.cmbDatabase.TabIndex = 42;
-            this.cmbDatabase.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cmbDatabase_MouseClick);
+            this.cmbDatabase.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CmbDatabase_MouseClick);
             // 
             // cmbAuth
             // 
@@ -742,7 +742,7 @@
             this.btnUnloadAppDomain.TabStop = false;
             this.btnUnloadAppDomain.Text = "Unload appdomain";
             this.btnUnloadAppDomain.UseVisualStyleBackColor = false;
-            this.btnUnloadAppDomain.Click += new System.EventHandler(this.btnUnLoadAppDomain_Click);
+            this.btnUnloadAppDomain.Click += new System.EventHandler(this.BtnUnLoadAppDomain_Click);
             // 
             // btnLoadAppDomain
             // 
@@ -993,8 +993,8 @@
             this.listBoxAssemblies.Size = new System.Drawing.Size(202, 424);
             this.listBoxAssemblies.TabIndex = 45;
             this.listBoxAssemblies.TabStop = false;
-            this.listBoxAssemblies.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxAssemblies_DrawItem);
-            this.listBoxAssemblies.SelectedIndexChanged += new System.EventHandler(this.listBoxAssemblies_SelectedIndexChanged);
+            this.listBoxAssemblies.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ListBoxAssemblies_DrawItem);
+            this.listBoxAssemblies.SelectedIndexChanged += new System.EventHandler(this.ListBoxAssemblies_SelectedIndexChanged);
             // 
             // label29
             // 
