@@ -536,9 +536,9 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(400, 3);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(106, 13);
+            this.label14.Size = new System.Drawing.Size(104, 13);
             this.label14.TabIndex = 1;
-            this.label14.Text = "Recient connection :";
+            this.label14.Text = "Recent connection :";
             // 
             // label1
             // 
