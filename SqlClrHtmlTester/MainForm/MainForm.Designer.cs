@@ -180,14 +180,14 @@
             this.itemCopyToClipboard.Name = "itemCopyToClipboard";
             this.itemCopyToClipboard.Size = new System.Drawing.Size(169, 22);
             this.itemCopyToClipboard.Text = "Copy to clipboard";
-            this.itemCopyToClipboard.Click += new System.EventHandler(this.itemCopyToClipboard_Click);
+            this.itemCopyToClipboard.Click += new System.EventHandler(this.ItemCopyToClipboard_Click);
             // 
             // itemSaveAsHtml
             // 
             this.itemSaveAsHtml.Name = "itemSaveAsHtml";
             this.itemSaveAsHtml.Size = new System.Drawing.Size(169, 22);
             this.itemSaveAsHtml.Text = "Save as HTML";
-            this.itemSaveAsHtml.Click += new System.EventHandler(this.itemSaveAsHtml_Click);
+            this.itemSaveAsHtml.Click += new System.EventHandler(this.ItemSaveAsHtml_Click);
             // 
             // itemExcel
             // 
@@ -1220,7 +1220,7 @@
             this.mnuClose});
             this.cms.Name = "cms";
             this.cms.Size = new System.Drawing.Size(130, 70);
-            this.cms.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.cms_ItemClicked);
+            this.cms.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.Cms_ItemClicked);
             // 
             // mnuOpen
             // 

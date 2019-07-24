@@ -24,8 +24,8 @@ namespace SqlClrHtmlTester
 
         private readonly Dictionary<string, string> _mystyle = new Dictionary<string, string>();
 
-        private readonly Evaluator _se = new Evaluator("", "",
-            new string[] {Directory.GetCurrentDirectory() + "\\Microsoft.Office.Interop.Excel.dll"});
+        private readonly Evaluator _se = new Evaluator("", "", "",
+            new[] {Directory.GetCurrentDirectory() + "\\Microsoft.Office.Interop.Excel.dll"});
 
 
         private DataSet _ds;
@@ -38,7 +38,8 @@ namespace SqlClrHtmlTester
         }
 
         private readonly List<KeyValuePair<int, string>> _listConnection = new List<KeyValuePair<int, string>>();
-        private readonly Security.TesterEncryptSupport.Simple3Des _wrapper = new Security.TesterEncryptSupport.Simple3Des(ConfigurationManager.AppSettings["SqlServerCentral"]);
+        private readonly Security.TesterEncryptSupport.Simple3Des _wrapper =
+            new Security.TesterEncryptSupport.Simple3Des(ConfigurationManager.AppSettings["SqlServerCentral"]);
         private const string Helpersplitter = "HELPER";
 
         #region Form loader
@@ -78,7 +79,7 @@ namespace SqlClrHtmlTester
             //Restore user inputs
             if (Convert.ToBoolean(ConfigurationManager.AppSettings["saveInput"]) && File.Exists(ConfigurationManager.AppSettings["fileToSaveInput"]))
             {
-                _state = Helper.loadConfig();
+                _state = Helper.LoadConfig();
                 if (_state != null)
                 {
                     try
@@ -121,7 +122,7 @@ namespace SqlClrHtmlTester
                         txtRCO.Value = Convert.ToInt32(_state.RcoText);
                         txtCustomStyle.Text = _state.CustomStyleText;
                         if (_state.ListBoxText != null)
-                            MakeListConnection(_state.ListBoxText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
+                            MakeListConnection(_state.ListBoxText.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
                     }
                     catch (Exception ex)
                     {
@@ -415,7 +416,7 @@ namespace SqlClrHtmlTester
         {
 
             if (Convert.ToBoolean(ConfigurationManager.AppSettings["saveInput"]))
-                Helper.writeConfig(_state, txtQuery.Text, txtParams.Text, cmbStyle.Text, txtServer.Text,
+                Helper.WriteConfig(_state, txtQuery.Text, txtParams.Text, cmbStyle.Text, txtServer.Text,
                     txtCaption.Text, txtFooter.Text, cmbAuth.Text, txtUserName.Text,
                     _wrapper.EncryptData(txtPassword.Text), cmbDatabase.Text, cmbRotate.Text, txtRCO.Value.ToString(CultureInfo.InvariantCulture),
                     txtCustomStyle.Text, SavelstConnection());
@@ -525,11 +526,11 @@ namespace SqlClrHtmlTester
             _listConnection.Insert(0, kp);
 
             listBoxConnection.Items.RemoveAt(index);
-            listBoxConnection.Items.Insert(0, drawItem(s));
+            listBoxConnection.Items.Insert(0, DrawItem(s));
             listBoxConnection.SelectedIndex = 0;
 
             var splitter = s.Split('@');
-            var splitter2 = splitter[1].Split(new string[] { Helpersplitter }, StringSplitOptions.None);
+            var splitter2 = splitter[1].Split(new[] { Helpersplitter }, StringSplitOptions.None);
 
             txtServer.Text = splitter2[0].Substring(0, splitter2[0].IndexOf("(", StringComparison.Ordinal));
             if (splitter2[1].Equals(string.Empty))
@@ -561,12 +562,12 @@ namespace SqlClrHtmlTester
             {
                 if (s.Equals(string.Empty))
                     continue;
-                var splitter = s.Split(new string[] { Helpersplitter }, StringSplitOptions.None);
+                var splitter = s.Split(new[] { Helpersplitter }, StringSplitOptions.None);
                 var second = _wrapper.DecryptData(splitter[1]);
-                var result = splitter[0] + Helpersplitter + second;
+                var result = $"{splitter[0]}{Helpersplitter}{second}";
                 var hasher = result.GetHashCode();
                 _listConnection.Add(new KeyValuePair<int, string>(hasher, result));
-                listBoxConnection.Items.Add(drawItem(s));
+                listBoxConnection.Items.Add(DrawItem(s));
 
             }
             //labelConnectionInfo.Text = listBoxConnection.Items[0].ToString().Replace("\r\n", ".");
@@ -594,19 +595,19 @@ namespace SqlClrHtmlTester
             e.DrawFocusRectangle();
         }
 
-        private string MakeListItem(string databaseName, string serverName, string userName, string password) => 
-            databaseName.ToUpper().Trim() + "@" + serverName.ToUpper().Trim() + "(" + userName.ToUpper().Trim() + ")" + Helpersplitter + password;
-        private string drawItem(string itemToDraw)
+        private string MakeListItem(string databaseName, string serverName, string userName, string password) =>
+            $"{databaseName.ToUpper().Trim()}@{serverName.ToUpper().Trim()}({userName.ToUpper().Trim()}){Helpersplitter}{password}";
+        private string DrawItem(string itemToDraw)
         {
             var splitter = itemToDraw.Split('@');
-            return splitter[0] + Environment.NewLine + splitter[1].Split(new string[] { Helpersplitter},StringSplitOptions.None)[0];
+            return splitter[0] + Environment.NewLine + splitter[1].Split(new[] { Helpersplitter},StringSplitOptions.None)[0];
         }
         private string SavelstConnection()
         {
             var retValue = "";
             foreach (var s in _listConnection)
             {
-                var splitter = s.Value.Split(new string[] { Helpersplitter }, StringSplitOptions.None);
+                var splitter = s.Value.Split(new[] { Helpersplitter }, StringSplitOptions.None);
                 var second = _wrapper.EncryptData(splitter[1]);
                 var result = splitter[0] + Helpersplitter + second;
                 retValue += result + Environment.NewLine;
@@ -669,10 +670,10 @@ namespace SqlClrHtmlTester
                 {
                     listBoxConnection.Items.Clear();
                     //Add at first position
-                    listBoxConnection.Items.Add(drawItem(descriptive));
+                    listBoxConnection.Items.Add(DrawItem(descriptive));
                     //Add the rest
                     foreach (var s in _listConnection)
-                        listBoxConnection.Items.Add(drawItem(s.Value));
+                        listBoxConnection.Items.Add(DrawItem(s.Value));
                     //syncronise
                     _listConnection.Insert(0, new KeyValuePair<int, string>(hashCode, descriptive));
                     listBoxConnection.SelectedIndex = 0;
@@ -693,7 +694,7 @@ namespace SqlClrHtmlTester
 
         }
         private string SetLabel() =>
-            txtServer.Text.Trim() + "." + cmbDatabase.Text.Trim() + "(" + txtUserName.Text.Trim() + ")";
+            $"{txtServer.Text.Trim()}.{cmbDatabase.Text.Trim()}({txtUserName.Text.Trim()})";
 
         private bool CheckInstallation()
         {
