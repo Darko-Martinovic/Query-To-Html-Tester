@@ -180,14 +180,14 @@
             this.itemCopyToClipboard.Name = "itemCopyToClipboard";
             this.itemCopyToClipboard.Size = new System.Drawing.Size(169, 22);
             this.itemCopyToClipboard.Text = "Copy to clipboard";
-            this.itemCopyToClipboard.Click += new System.EventHandler(this.itemCopyToClipboard_Click);
+            this.itemCopyToClipboard.Click += new System.EventHandler(this.ItemCopyToClipboard_Click);
             // 
             // itemSaveAsHtml
             // 
             this.itemSaveAsHtml.Name = "itemSaveAsHtml";
             this.itemSaveAsHtml.Size = new System.Drawing.Size(169, 22);
             this.itemSaveAsHtml.Text = "Save as HTML";
-            this.itemSaveAsHtml.Click += new System.EventHandler(this.itemSaveAsHtml_Click);
+            this.itemSaveAsHtml.Click += new System.EventHandler(this.ItemSaveAsHtml_Click);
             // 
             // itemExcel
             // 
@@ -478,7 +478,7 @@
             this.cmbDatabase.Name = "cmbDatabase";
             this.cmbDatabase.Size = new System.Drawing.Size(249, 24);
             this.cmbDatabase.TabIndex = 42;
-            this.cmbDatabase.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cmbDatabase_MouseClick);
+            this.cmbDatabase.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CmbDatabase_MouseClick);
             // 
             // cmbAuth
             // 
@@ -536,9 +536,9 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(400, 3);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(106, 13);
+            this.label14.Size = new System.Drawing.Size(104, 13);
             this.label14.TabIndex = 1;
-            this.label14.Text = "Recient connection :";
+            this.label14.Text = "Recent connection :";
             // 
             // label1
             // 
@@ -742,7 +742,7 @@
             this.btnUnloadAppDomain.TabStop = false;
             this.btnUnloadAppDomain.Text = "Unload appdomain";
             this.btnUnloadAppDomain.UseVisualStyleBackColor = false;
-            this.btnUnloadAppDomain.Click += new System.EventHandler(this.btnUnLoadAppDomain_Click);
+            this.btnUnloadAppDomain.Click += new System.EventHandler(this.BtnUnLoadAppDomain_Click);
             // 
             // btnLoadAppDomain
             // 
@@ -993,8 +993,8 @@
             this.listBoxAssemblies.Size = new System.Drawing.Size(202, 424);
             this.listBoxAssemblies.TabIndex = 45;
             this.listBoxAssemblies.TabStop = false;
-            this.listBoxAssemblies.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxAssemblies_DrawItem);
-            this.listBoxAssemblies.SelectedIndexChanged += new System.EventHandler(this.listBoxAssemblies_SelectedIndexChanged);
+            this.listBoxAssemblies.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.ListBoxAssemblies_DrawItem);
+            this.listBoxAssemblies.SelectedIndexChanged += new System.EventHandler(this.ListBoxAssemblies_SelectedIndexChanged);
             // 
             // label29
             // 
@@ -1220,7 +1220,7 @@
             this.mnuClose});
             this.cms.Name = "cms";
             this.cms.Size = new System.Drawing.Size(130, 70);
-            this.cms.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.cms_ItemClicked);
+            this.cms.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.Cms_ItemClicked);
             // 
             // mnuOpen
             // 

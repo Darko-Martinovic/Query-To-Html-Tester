@@ -19,8 +19,10 @@ namespace Utilities
         private readonly string[] _mIncludeOption;
         private int _mIncludeLines = 0;
 
-        public Evaluator(string myPath, string wIncludeCode = "", string[] wIncludeReferencies = null,
-            string[] wIncludeImports = null, string[] wIncludeOption = null)
+        public Evaluator(string myPath, string assemblyName, string wIncludeCode = "",
+                         string[] wIncludeReferencies = null,
+                         string[] wIncludeImports = null,
+                         string[] wIncludeOption = null)
         {
             _mIncludeCode = wIncludeCode;
             _mIncludeReferencies = wIncludeReferencies;
@@ -29,13 +31,8 @@ namespace Utilities
         }
 
 
-        #region " Compile "
+        #region  Compile 
 
-        /// <summary>
-        /// Rutina u kojoj se vrši evaluacija 
-        /// </summary>
-        /// <params>Kod upisan na client strani npr. u multiline text box-u </params>
-        /// <params> Različito(!)  od include code</params>
         public object Compile(string netCode, bool oneFunction, string myNameSpace, ref string errorMessage)
         {
             object o = null;
@@ -51,16 +48,7 @@ namespace Utilities
             cp.ReferencedAssemblies.Add("system.xml.dll");
             cp.ReferencedAssemblies.Add("system.data.dll");
             cp.ReferencedAssemblies.Add("system.drawing.dll");
-            //try
-            //{
-            //    cp.ReferencedAssemblies.Add(System.Data.DataRowComparer<System.Data.DataRow>.Default.GetType().Assembly.Location);
-            //}
-            //catch (Exception ex)
-            //{
-            //}
 
-            //Dim c11 As String = "C:\Program Files\Reference Assemblies\Microsoft\Framework\v3.5\System.Data.Linq.dll"
-            //cp.ReferencedAssemblies.Add(c11)
 
             if ((_mIncludeReferencies != null))
             {
@@ -90,15 +78,15 @@ namespace Utilities
                 cp.TempFiles.KeepFiles = false;
                 cp.GenerateInMemory = false;
                 string dirName = ".";
-                if (!System.IO.Directory.Exists(dirName))
+                if (!Directory.Exists(dirName))
                 {
                     try
                     {
-                        System.IO.Directory.CreateDirectory(dirName);
+                        Directory.CreateDirectory(dirName);
                         dirName = "c:\\tmp";
-                        if (!System.IO.Directory.Exists(dirName))
+                        if (!Directory.Exists(dirName))
                         {
-                            System.IO.Directory.CreateDirectory(dirName);
+                            Directory.CreateDirectory(dirName);
                         }
                     }
                     catch (Exception ex)
@@ -193,14 +181,11 @@ namespace Utilities
             }
             catch (Exception ex)
             {
-                errorMessage = sb.ToString() + Environment.NewLine + ex.Message;
+                errorMessage = $"{sb}{Environment.NewLine}{ex.Message}";
             }
             sb = null;
             return o;
         }
-
-        private string _assemblyName = string.Empty;
-
 
         #endregion
 
@@ -209,7 +194,7 @@ namespace Utilities
         public string WriteErrors(CompilerErrorCollection ce = null, bool includeBr = true)
         {
             if (ce == null)
-                ce = this.Errors;
+                ce = Errors;
             if (ce == null)
                 return string.Empty;
             StringBuilder sb = new StringBuilder("");

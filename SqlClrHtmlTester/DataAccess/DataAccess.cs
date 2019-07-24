@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace SqlClrHtmlTester
 {
-    class DataAccess
+    internal class DataAccess
     {
         public static DataSet GetDataSet(string connectionString, string commandText, List<SqlParameter> listOfParams, out string error)
         {

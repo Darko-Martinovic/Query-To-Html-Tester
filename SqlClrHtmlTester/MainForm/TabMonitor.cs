@@ -9,7 +9,7 @@ namespace SqlClrHtmlTester
 {
     partial class MainForm
     {
-        #region " Bind assmebly list"
+        #region  Bind assmebly list
         private void BindAssemblyList(string name)
         {
             listBoxAssemblies.Items.Clear();
@@ -133,7 +133,7 @@ namespace SqlClrHtmlTester
 
         #endregion
 
-        private void listBoxAssemblies_SelectedIndexChanged(object sender, EventArgs e)
+        private void ListBoxAssemblies_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindAssembly(_ds.Tables[0].Rows[listBoxAssemblies.SelectedIndex]);
             var name = _ds.Tables[0].Rows[listBoxAssemblies.SelectedIndex]["name"].ToString();
@@ -142,7 +142,7 @@ namespace SqlClrHtmlTester
 
         }
 
-        private void listBoxAssemblies_DrawItem(object sender, DrawItemEventArgs e)
+        private void ListBoxAssemblies_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.DrawBackground();
             var myBrush = Brushes.Black;
@@ -218,10 +218,11 @@ namespace SqlClrHtmlTester
                 MessageBox.Show($@"Not supported for assembly : {listBoxAssemblies.Text}");
             }
         }
-        private string GetConnectionString() => DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text,
+        private string GetConnectionString() => 
+            DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text,
             cmbAuth.SelectedIndex == 0 , txtUserName.Text, txtPassword.Text);
 
-        private void btnUnLoadAppDomain_Click(object sender, EventArgs e)
+        private void BtnUnLoadAppDomain_Click(object sender, EventArgs e)
         {
             var sqlPerm =
                     new SqlClientPermission(PermissionState.Unrestricted);
@@ -235,7 +236,8 @@ namespace SqlClrHtmlTester
             btnLoadAppDomain.Enabled = false;
             btnGetHtml.Enabled = false;
             var permissionSet = txtPermissionSet.Text;
-            _connectionString = DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text, cmbAuth.SelectedIndex == 0, txtUserName.Text, txtPassword.Text);
+            _connectionString = DataAccess.GetConnectionString(txtServer.Text, cmbDatabase.Text,
+                cmbAuth.SelectedIndex == 0, txtUserName.Text, txtPassword.Text);
             if (Monitor.ReleaseMemory(_connectionString, "[" + listBoxAssemblies.Text + "]", permissionSet))
             {
                 BindAssemblyList(listBoxAssemblies.Text);
